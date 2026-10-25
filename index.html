@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Álvaro Mª Duarte Do Santos | DevOps & Cloud Engineer</title>
+  <meta name="description" content="Portafolio profesional de Álvaro Mª Duarte Do Santos - Cloud & DevOps Engineer especializado en Kubernetes, GCP, IaC (Terraform) y Arquitecturas de Alto Rendimiento.">
+  <meta name="theme-color" content="#070913">
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Álvaro Duarte | DevOps & Cloud Engineer">
+  <meta property="og:description" content="Infraestructura como Código, Kubernetes, Cloud Architecture & Automatización CI/CD.">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN for instant robust utility grid/flex support -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#060813] text-slate-100 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
+
+  <!-- Ambient Liquid Glass Background Blobs -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Ambient Cursor Glow Effect -->
+  <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+
+  <!-- Navigation Bar -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <nav class="glass-nav rounded-2xl px-5 py-3.5 flex items-center justify-between transition-all">
+        <a href="#hero" class="flex items-center gap-2 group">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform duration-300">
+            <span>AD</span>
+          </div>
+          <span class="font-outfit font-bold tracking-tight text-lg text-white group-hover:text-cyan-300 transition-colors">
+            alvaro<span class="text-cyan-400">.duarte</span>
+          </span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-1 text-sm font-medium text-slate-300">
+          <a href="#hero" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Inicio</a>
+          <a href="#sobre-mi" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Sobre Mí</a>
+          <a href="#experiencia" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Experiencia</a>
+          <a href="#habilidades" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Habilidades</a>
+          <a href="#proyectos" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Proyectos</a>
+          <a href="#contacto" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Contacto</a>
+        </div>
+
+        <!-- CTA & Quick Actions -->
+        <div class="hidden md:flex items-center gap-3">
+          <a href="#contacto" class="btn-glass-primary text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-2">
+            <span>Hablemos</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Hamburger -->
+        <button id="mobile-menu-btn" type="button" class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg focus:outline-none" aria-label="Abrir menú">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-2 glass-card rounded-2xl p-4 flex flex-col gap-2 text-slate-200">
+        <a href="#hero" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Inicio</a>
+        <a href="#sobre-mi" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Sobre Mí</a>
+        <a href="#experiencia" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Experiencia</a>
+        <a href="#habilidades" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Habilidades</a>
+        <a href="#proyectos" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Proyectos</a>
+        <a href="#contacto" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Contacto</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28 pt-32 pb-20">
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="min-h-[85vh] flex items-center justify-center pt-8">
+      <div class="w-full">
+        <div class="glass-card-spotlight rounded-3xl p-8 sm:p-12 lg:p-16 border border-white/15 relative overflow-hidden shadow-2xl backdrop-blur-2xl">
+          <!-- Ambient gradient flare inside hero card -->
+          <div class="absolute -top-24 -right-24 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+            <!-- Left Info -->
+            <div class="lg:col-span-8 space-y-6 text-left">
+              <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-medium tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span class="w-2 h-2 rounded-full bg-cyan-400 -ml-4"></span>
+                <span>Disponible para proyectos Cloud & DevOps</span>
+              </div>
+
+              <h1 class="text-4xl sm:text-6xl lg:text-7xl font-outfit font-extrabold tracking-tight text-white leading-tight">
+                Hola, soy <br>
+                <span class="gradient-text">Álvaro Duarte</span>
+              </h1>
+
+              <p class="text-xl sm:text-2xl font-medium text-slate-300 max-w-2xl leading-relaxed">
+                <span class="text-white font-semibold">DevOps & Cloud Engineer</span> especializado en arquitecturas cloud en GCP/Azure, Kubernetes, automatización CI/CD e Infraestructura como Código.
+              </p>
+
+              <p class="text-slate-400 text-base max-w-xl leading-relaxed">
+                Estudiante del Máster en Computación de Alto Rendimiento (HPC) y Graduado en Ingeniería de Computadores. Fusiono rigor técnico en centros de datos con la vanguardia de plataformas nativas de la nube.
+              </p>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-wrap items-center gap-4 pt-4">
+                <a href="#proyectos" class="btn-gradient px-6 py-3.5 rounded-xl text-sm font-semibold flex items-center gap-2 group shadow-lg shadow-cyan-500/25">
+                  <span>Explorar Proyectos</span>
+                  <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+
+                <a href="#contacto" class="btn-glass px-6 py-3.5 rounded-xl text-sm font-semibold flex items-center gap-2 hover:border-cyan-400/50 transition-colors">
+                  <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  <span>Contactar</span>
+                </a>
+
+                <button id="download-cv-btn" class="btn-glass px-6 py-3.5 rounded-xl text-sm font-semibold flex items-center gap-2 hover:border-purple-400/50 transition-colors" title="Ver Resumen de CV">
+                  <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>Descargar CV</span>
+                </button>
+              </div>
+
+              <!-- Key Metric Badges -->
+              <div class="pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div>
+                  <div class="text-2xl font-bold font-outfit text-white flex items-center gap-1">
+                    <span>GCP & Azure</span>
+                  </div>
+                  <div class="text-xs text-slate-400">Cloud Environments</div>
+                </div>
+                <div>
+                  <div class="text-2xl font-bold font-outfit text-cyan-300">Terraform + K8s</div>
+                  <div class="text-xs text-slate-400">IaC & Orchestration</div>
+                </div>
+                <div>
+                  <div class="text-2xl font-bold font-outfit text-purple-300">HPC & Linux</div>
+                  <div class="text-xs text-slate-400">UPV Master's Degree</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Visual: Interactive Glass Terminal & Cloud Stack -->
+            <div class="lg:col-span-4 flex justify-center">
+              <div class="w-full max-w-sm glass-terminal rounded-2xl p-5 border border-white/20 shadow-2xl space-y-4">
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-white/10 text-xs text-slate-400 font-mono">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                  </div>
+                  <span>alvaro@cloud-node:~$</span>
+                </div>
+
+                <!-- Code / Terminal snippets -->
+                <div class="space-y-2.5 font-mono text-xs leading-relaxed">
+                  <p class="text-slate-400"><span class="text-cyan-400">$</span> terraform plan -out=production</p>
+                  <p class="text-emerald-400 font-medium">✓ Plan: 14 to add, 0 to change, 0 to destroy.</p>
+                  <p class="text-slate-400"><span class="text-cyan-400">$</span> kubectl get pods -n dataspace</p>
+                  <div class="bg-black/30 p-2.5 rounded-lg border border-white/5 space-y-1 text-[11px]">
+                    <div class="flex justify-between text-slate-300">
+                      <span>connector-eu-core</span>
+                      <span class="text-emerald-400">Running (3/3)</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                      <span>ingress-tls-edge</span>
+                      <span class="text-emerald-400">Ready</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                      <span>gitlab-runner-ci</span>
+                      <span class="text-cyan-400">Idle (0 errors)</span>
+                    </div>
+                  </div>
+                  <p class="text-purple-300 text-[11px] pt-1">
+                    ➜ Status: <span class="text-white font-semibold">100% High Availability</span>
+                  </p>
+                </div>
+
+                <!-- Fast Pill Highlights -->
+                <div class="flex flex-wrap gap-1.5 pt-2">
+                  <span class="tech-pill-sm">GitLab CI/CD</span>
+                  <span class="tech-pill-sm">Docker</span>
+                  <span class="tech-pill-sm">Zabbix</span>
+                  <span class="tech-pill-sm">Grafana</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- SOBRE MÍ SECTION -->
+    <section id="sobre-mi" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Perfil Profesional</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">Ingeniería robusta, desde el metal hasta la nube</h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="glass-card rounded-2xl p-8 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+            </div>
+            <h3 class="text-xl font-bold font-outfit text-white group-hover:text-cyan-300 transition-colors">Cloud & DevOps Nativo</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Diseño arquitecturas <span class="text-white font-medium">Greenfield en GCP y Azure</span> desde cero con Terraform. Automatizo pipelines de CI/CD en GitLab para orquestar contenedores Docker y despliegues estables en Kubernetes.
+            </p>
+          </div>
+          <div class="pt-6 border-t border-white/5 text-xs text-cyan-400/80 font-mono flex items-center gap-2">
+            <span>#Terraform #Kubernetes #GCP</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card rounded-2xl p-8 border border-white/10 hover:border-purple-500/40 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <h3 class="text-xl font-bold font-outfit text-white group-hover:text-purple-300 transition-colors">Experiencia en Data Center</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Comencé en el nivel físico de misión crítica en <span class="text-white font-medium">Vodafone</span>: cableado estructurado, topología de racks, monitorización con Zabbix/Nagios e integración IoT de ventilación y climatización.
+            </p>
+          </div>
+          <div class="pt-6 border-t border-white/5 text-xs text-purple-400/80 font-mono flex items-center gap-2">
+            <span>#Infraestructura #Zabbix #DataCenter</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card rounded-2xl p-8 border border-white/10 hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="text-xl font-bold font-outfit text-white group-hover:text-emerald-300 transition-colors">HPC & Datos Soberanos</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Actualmente cursando el Máster en Computación de Alto Rendimiento en la <span class="text-white font-medium">UPV</span>. He liderado despliegues para proveedores de espacios de datos bajo estándares europeos de soberanía digital.
+            </p>
+          </div>
+          <div class="pt-6 border-t border-white/5 text-xs text-emerald-400/80 font-mono flex items-center gap-2">
+            <span>#HPC #DataSpaces #EuropeStandards</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- EXPERIENCIA SECTION -->
+    <section id="experiencia" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Trayectoria</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">Experiencia Profesional</h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="relative max-w-4xl mx-auto">
+        <!-- Vertical Timeline Line -->
+        <div class="hidden sm:block absolute left-8 top-4 bottom-4 w-0.5 bg-gradient-to-b from-cyan-500 via-purple-500 to-transparent"></div>
+
+        <div class="space-y-10">
+
+          <!-- Experience 1: Serenia Solutions -->
+          <div class="timeline-item relative sm:pl-20">
+            <!-- Timeline Marker Dot -->
+            <div class="hidden sm:flex absolute left-6 top-6 -translate-x-1/2 w-5 h-5 rounded-full bg-[#070913] border-2 border-cyan-400 items-center justify-center">
+              <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-cyan-400/30 transition-all">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-xl font-bold font-outfit text-white">DevOps Engineer</h3>
+                  <div class="text-cyan-300 font-medium text-sm flex items-center gap-2">
+                    <span>Serenia Solutions</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Tech Startup</span>
+                  </div>
+                </div>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-slate-300 w-fit">
+                  <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Diciembre 2025 – Julio 2026</span>
+                </div>
+              </div>
+
+              <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Infraestructura Greenfield & DevOps:</strong> Diseñé e implementé nuevas arquitecturas cloud desde cero en GCP, definiendo los estándares de Infraestructura como Código (IaC).</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Automatización de Despliegues:</strong> Creé y optimicé pipelines de GitLab CI/CD para automatizar compilaciones de imágenes Docker con fases de testing automatizadas para garantizar cero errores en producción.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-cyan-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Kubernetes & Espacios de Datos Europeos:</strong> Desplegué entornos de staging completamente contenedorizados en Kubernetes para validar cambios continuos y lideré el despliegue técnico para proveedores de espacios de datos bajo normativas europeas de intercambio de datos.</span>
+                </li>
+              </ul>
+
+              <div class="flex flex-wrap gap-2 mt-5 pt-4 border-t border-white/5">
+                <span class="tech-tag">GCP</span>
+                <span class="tech-tag">Kubernetes</span>
+                <span class="tech-tag">GitLab CI/CD</span>
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">Terraform</span>
+                <span class="tech-tag">Data Spaces</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience 2: Vodafone -->
+          <div class="timeline-item relative sm:pl-20">
+            <!-- Timeline Marker Dot -->
+            <div class="hidden sm:flex absolute left-6 top-6 -translate-x-1/2 w-5 h-5 rounded-full bg-[#070913] border-2 border-purple-400 items-center justify-center">
+              <div class="w-2 h-2 rounded-full bg-purple-400"></div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-purple-400/30 transition-all">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-xl font-bold font-outfit text-white">Data Center Engineer Trainee</h3>
+                  <div class="text-purple-300 font-medium text-sm">Vodafone</div>
+                </div>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-slate-300 w-fit">
+                  <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Octubre 2024 – Mayo 2025</span>
+                </div>
+              </div>
+
+              <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-purple-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Despliegue de Redes e Infraestructura Física:</strong> Gestión activa de centro de datos: tendido de fibra óptica y cableado ethernet, mapeo y documentación topográfica de server racks, y aprovisionamiento de conectividad para equipos de validación.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-purple-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Automatización e IoT en Instalaciones:</strong> Integración exitosa de sistemas físicos de climatización y ventilación en la red corporativa vía Ethernet, mejorando la visibilidad del estado de las instalaciones.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-purple-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Administración y Monitorización de Sistemas:</strong> Configuración de instancias Windows Server y creación de tableros de métricas en Nagios y Zabbix para detectar anomalías proactivamente y prevenir interrupciones de servicio.</span>
+                </li>
+              </ul>
+
+              <div class="flex flex-wrap gap-2 mt-5 pt-4 border-t border-white/5">
+                <span class="tech-tag">Data Center</span>
+                <span class="tech-tag">Zabbix</span>
+                <span class="tech-tag">Nagios</span>
+                <span class="tech-tag">Windows Server</span>
+                <span class="tech-tag">Fiber & Ethernet</span>
+                <span class="tech-tag">IoT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience 3: Capgemini -->
+          <div class="timeline-item relative sm:pl-20">
+            <!-- Timeline Marker Dot -->
+            <div class="hidden sm:flex absolute left-6 top-6 -translate-x-1/2 w-5 h-5 rounded-full bg-[#070913] border-2 border-blue-400 items-center justify-center">
+              <div class="w-2 h-2 rounded-full bg-blue-400"></div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-blue-400/30 transition-all">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                  <h3 class="text-xl font-bold font-outfit text-white">Cloud Engineer Trainee</h3>
+                  <div class="text-blue-300 font-medium text-sm">Capgemini</div>
+                </div>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-slate-300 w-fit">
+                  <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Marzo 2024 – Mayo 2024</span>
+                </div>
+              </div>
+
+              <ul class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-blue-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Infraestructura Cloud & Contenedores:</strong> Colaboración en automatizaciones con Terraform para aprovisionar máquinas virtuales, redes y bases de datos en la nube. Configuración de entornos locales con Kubernetes y Docker.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-blue-400 mt-1 flex-shrink-0">✦</span>
+                  <span><strong class="text-white">Observabilidad y Networking:</strong> Monitorización de entornos cloud mediante Centreon y Grafana, aplicando troubleshooting en enrutamiento, configuración de firewalls y tráfico de red.</span>
+                </li>
+              </ul>
+
+              <div class="flex flex-wrap gap-2 mt-5 pt-4 border-t border-white/5">
+                <span class="tech-tag">Terraform</span>
+                <span class="tech-tag">Kubernetes</span>
+                <span class="tech-tag">Grafana</span>
+                <span class="tech-tag">Centreon</span>
+                <span class="tech-tag">Cloud Networks</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- EDUCACIÓN Y CERTIFICACIONES -->
+    <section id="educacion" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Formación Académica</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">Educación y Certificaciones</h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Educación -->
+        <div class="space-y-6">
+          <h3 class="text-lg font-outfit font-bold text-slate-200 flex items-center gap-2">
+            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            <span>Títulos Universitarios</span>
+          </h3>
+
+          <!-- Master -->
+          <div class="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-mono font-medium text-cyan-300 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20">2026 – Presente</span>
+            </div>
+            <h4 class="text-lg font-bold text-white font-outfit">Máster en Computación y Alto Rendimiento (MUCNAP)</h4>
+            <p class="text-slate-300 text-sm mt-1">Universitat Politècnica de València (UPV)</p>
+            <p class="text-slate-400 text-xs mt-2 leading-relaxed">Especialización en arquitecturas distribuidas, computación paralela, clústeres y optimización de cargas de trabajo intensivas.</p>
+          </div>
+
+          <!-- Grado -->
+          <div class="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-mono font-medium text-purple-300 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">2019 – 2025</span>
+            </div>
+            <h4 class="text-lg font-bold text-white font-outfit">Grado en Ingeniería de Computadores</h4>
+            <p class="text-slate-300 text-sm mt-1">Universidad de Málaga (UMA)</p>
+            <div class="mt-2.5 flex items-center gap-2 text-xs text-slate-300">
+              <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300">Intercambio Internacional</span>
+              <span>Brno University of Technology (2022 – 2023)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificaciones & Idiomas -->
+        <div class="space-y-6">
+          <h3 class="text-lg font-outfit font-bold text-slate-200 flex items-center gap-2">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            <span>Certificaciones & Idiomas</span>
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Cert 1 -->
+            <div class="glass-card rounded-xl p-4 border border-white/10 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-bold text-xs flex-shrink-0">IaC</div>
+              <div>
+                <h5 class="text-sm font-semibold text-white">Terraform Certification</h5>
+                <p class="text-xs text-slate-400">Udemy</p>
+              </div>
+            </div>
+
+            <!-- Cert 2 -->
+            <div class="glass-card rounded-xl p-4 border border-white/10 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center font-bold text-xs flex-shrink-0">Cisco</div>
+              <div>
+                <h5 class="text-sm font-semibold text-white">CyberOps Associate</h5>
+                <p class="text-xs text-slate-400">Cisco Networking Academy</p>
+              </div>
+            </div>
+
+            <!-- Cert 3 -->
+            <div class="glass-card rounded-xl p-4 border border-white/10 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-xs flex-shrink-0">Py</div>
+              <div>
+                <h5 class="text-sm font-semibold text-white">Python & Git Cert.</h5>
+                <p class="text-xs text-slate-400">Udemy</p>
+              </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="glass-card rounded-xl p-4 border border-white/10 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-xs flex-shrink-0">Lang</div>
+              <div class="text-xs space-y-1">
+                <div class="flex items-center gap-1.5"><span class="font-semibold text-white">Español:</span> <span class="text-slate-400">Nativo</span></div>
+                <div class="flex items-center gap-1.5"><span class="font-semibold text-white">Inglés:</span> <span class="text-cyan-300">B2 / Profesional</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- HABILIDADES SECTION -->
+    <section id="habilidades" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Stack Tecnológico</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">Habilidades & Tecnologías</h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Col 1: Cloud & DevOps -->
+        <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 hover:border-cyan-400/40 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3 class="text-base font-bold font-outfit text-white">Cloud & DevOps</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="tech-pill">GCP</span>
+            <span class="tech-pill">Azure</span>
+            <span class="tech-pill">Terraform</span>
+            <span class="tech-pill">Kubernetes</span>
+            <span class="tech-pill">Docker</span>
+            <span class="tech-pill">GitLab CI/CD</span>
+            <span class="tech-pill">IaC</span>
+          </div>
+        </div>
+
+        <!-- Col 2: Lenguajes & Scripting -->
+        <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 hover:border-purple-400/40 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <h3 class="text-base font-bold font-outfit text-white">Lenguajes de Programación</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">Bash / Shell</span>
+            <span class="tech-pill">Java</span>
+            <span class="tech-pill">C / C++</span>
+            <span class="tech-pill">SQL</span>
+            <span class="tech-pill">Git</span>
+          </div>
+        </div>
+
+        <!-- Col 3: Redes & Arquitectura -->
+        <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 hover:border-emerald-400/40 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          </div>
+          <h3 class="text-base font-bold font-outfit text-white">Redes & Protocolos</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="tech-pill">TCP/IP</span>
+            <span class="tech-pill">DNS / DHCP</span>
+            <span class="tech-pill">Wireshark</span>
+            <span class="tech-pill">Firewalling</span>
+            <span class="tech-pill">Routing</span>
+            <span class="tech-pill">Data Spaces</span>
+          </div>
+        </div>
+
+        <!-- Col 4: Observabilidad & Sistemas -->
+        <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-4 hover:border-rose-400/40 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h3 class="text-base font-bold font-outfit text-white">Sistemas & Observabilidad</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="tech-pill">Linux (Ubuntu/Debian)</span>
+            <span class="tech-pill">Windows Server</span>
+            <span class="tech-pill">Grafana</span>
+            <span class="tech-pill">Zabbix</span>
+            <span class="tech-pill">Nagios</span>
+            <span class="tech-pill">Centreon</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- PROYECTOS SECTION -->
+    <section id="proyectos" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Portafolio</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">Proyectos Destacados</h2>
+        <p class="text-slate-400 text-sm">Soluciones técnicas que combinan automatización, infraestructura cloud e inteligencia artificial.</p>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- Proyecto 1: Sonar Web (Destacado del CV) -->
+        <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-400/40 transition-all duration-300 flex flex-col group">
+          <!-- Mockup Visual Header -->
+          <div class="h-48 relative overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950 p-6 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(6,182,212,0.25),transparent_70%)]"></div>
+            <div class="flex justify-between items-center relative z-10">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">AI Voice Assistant</span>
+              <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></div>
+            </div>
+
+            <!-- Conceptual Visual Graphic -->
+            <div class="relative z-10 flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-white font-outfit font-bold text-lg">Sonar Web</h4>
+                <p class="text-slate-400 text-xs font-mono">Python • STT • TTS • GPT</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Body -->
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Asistente web controlado por comandos de voz que integra modelos de lenguaje OpenAI GPT, APIs de reconocimiento de voz (Speech-to-Text) y sintetización (Text-to-Speech), con una interfaz gráfica accesible desarrollada con Tkinter y automatización con Selenium.
+            </p>
+
+            <div class="space-y-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="tech-pill-sm">Python</span>
+                <span class="tech-pill-sm">OpenAI GPT</span>
+                <span class="tech-pill-sm">Speech-to-Text</span>
+                <span class="tech-pill-sm">Selenium</span>
+                <span class="tech-pill-sm">Tkinter</span>
+              </div>
+
+              <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                <a href="https://github.com/AlvaroDuarteDoSantos" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  <span>Código en GitHub</span>
+                </a>
+                <span class="text-[11px] text-slate-400 font-mono">Proyecto Open Source</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proyecto 2: European Data Space Infrastructure -->
+        <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/10 hover:border-purple-400/40 transition-all duration-300 flex flex-col group">
+          <!-- Mockup Visual Header -->
+          <div class="h-48 relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-950 to-indigo-950 p-6 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,0.25),transparent_70%)]"></div>
+            <div class="flex justify-between items-center relative z-10">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/30">European Sovereign Cloud</span>
+              <span class="text-xs text-purple-300 font-mono">IaC + K8s</span>
+            </div>
+
+            <!-- Conceptual Visual Graphic -->
+            <div class="relative z-10 flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-400/30 flex items-center justify-center text-purple-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-white font-outfit font-bold text-lg">European Data Space Deployment</h4>
+                <p class="text-slate-400 text-xs font-mono">Kubernetes • GCP • GitLab CI</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Body -->
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Diseño y despliegue de infraestructura soberana en Kubernetes para conectores de intercambio de datos federados que cumplen con la normativa europea. Automatización con Terraform y pipelines seguros de GitLab CI/CD con validación continua.
+            </p>
+
+            <div class="space-y-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="tech-pill-sm">Kubernetes</span>
+                <span class="tech-pill-sm">GCP</span>
+                <span class="tech-pill-sm">GitLab CI</span>
+                <span class="tech-pill-sm">Terraform</span>
+                <span class="tech-pill-sm">Docker</span>
+              </div>
+
+              <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                <span class="text-xs font-semibold text-purple-300 flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span>Arquitectura Desplegada</span>
+                </span>
+                <span class="text-[11px] text-slate-400 font-mono">Enterprise Level</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proyecto 3: Data Center Telemetry & IoT -->
+        <div class="project-card glass-card rounded-2xl overflow-hidden border border-white/10 hover:border-emerald-400/40 transition-all duration-300 flex flex-col group">
+          <!-- Mockup Visual Header -->
+          <div class="h-48 relative overflow-hidden bg-gradient-to-br from-slate-900 via-teal-950 to-emerald-950 p-6 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.25),transparent_70%)]"></div>
+            <div class="flex justify-between items-center relative z-10">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Mission Critical IoT</span>
+              <span class="text-xs text-emerald-300 font-mono">Monitoring</span>
+            </div>
+
+            <!-- Conceptual Visual Graphic -->
+            <div class="relative z-10 flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-white font-outfit font-bold text-lg">DC Telemetry & Cooling IoT</h4>
+                <p class="text-slate-400 text-xs font-mono">Zabbix • Nagios • Grafana</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Body -->
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Integración de telemetría de climatización y ventilación de CPD vía Ethernet a dashboards de monitorización centralizados. Alertas proactivas y prevención de anomalías en hardware de misión crítica con Zabbix y Grafana.
+            </p>
+
+            <div class="space-y-4">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="tech-pill-sm">Zabbix</span>
+                <span class="tech-pill-sm">Nagios</span>
+                <span class="tech-pill-sm">Grafana</span>
+                <span class="tech-pill-sm">Ethernet / SNMP</span>
+                <span class="tech-pill-sm">IoT</span>
+              </div>
+
+              <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                <span class="text-xs font-semibold text-emerald-300 flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  <span>99.99% Uptime</span>
+                </span>
+                <span class="text-[11px] text-slate-400 font-mono">Data Center Grade</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- CONTACTO SECTION -->
+    <section id="contacto" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Conexión</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">¿Hablamos de tu próximo reto?</h2>
+        <p class="text-slate-400 text-sm">Ya sea para un proyecto de infraestructura, consultoría DevOps o nuevas oportunidades laborales.</p>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Contact Info Side -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="glass-card rounded-2xl p-6 sm:p-8 border border-white/10 space-y-6">
+            <h3 class="text-xl font-bold font-outfit text-white">Canales directos</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Estoy siempre interesado en proyectos innovadores de computación en la nube, optimización de pipelines y arquitecturas de alto rendimiento.
+            </p>
+
+            <div class="space-y-4">
+              <!-- Email Card -->
+              <div class="flex items-center gap-4 p-3.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400/40 transition-colors group">
+                <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-xs text-slate-400">Correo Electrónico</div>
+                  <div id="email-text" class="text-sm font-semibold text-white truncate">alvaroddo@gmail.com</div>
+                </div>
+                <button id="copy-email-btn" class="px-2.5 py-1 text-xs rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors" title="Copiar email">
+                  Copiar
+                </button>
+              </div>
+
+              <!-- Location Card -->
+              <div class="flex items-center gap-4 p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-400">Ubicación Actual</div>
+                  <div class="text-sm font-semibold text-white">Valencia / Málaga, España</div>
+                </div>
+              </div>
+
+              <!-- Social Links -->
+              <div class="pt-4 border-t border-white/10 flex items-center gap-3">
+                <a href="https://www.linkedin.com/in/%C3%A1lvaro-mar%C3%ADa-duarte-do-santos-b42b04277/" target="_blank" rel="noopener noreferrer" class="btn-glass p-3 rounded-xl flex items-center gap-2 text-xs font-medium hover:text-cyan-300 transition-colors" aria-label="LinkedIn">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/AlvaroDuarteDoSantos" target="_blank" rel="noopener noreferrer" class="btn-glass p-3 rounded-xl flex items-center gap-2 text-xs font-medium hover:text-cyan-300 transition-colors" aria-label="GitHub">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  <span>GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="lg:col-span-7">
+          <div class="glass-card-spotlight rounded-2xl p-6 sm:p-8 border border-white/10 relative">
+            <form id="contact-form" class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label for="name" class="block text-xs font-medium text-slate-300">Nombre Completo</label>
+                  <input type="text" id="name" name="name" required placeholder="Tu nombre" class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none transition-all">
+                </div>
+
+                <div class="space-y-1.5">
+                  <label for="email" class="block text-xs font-medium text-slate-300">Correo Electrónico</label>
+                  <input type="email" id="email" name="email" required placeholder="tu@email.com" class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none transition-all">
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <label for="subject" class="block text-xs font-medium text-slate-300">Asunto</label>
+                <input type="text" id="subject" name="subject" required placeholder="Proyecto Cloud / Oportunidad DevOps" class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none transition-all">
+              </div>
+
+              <div class="space-y-1.5">
+                <label for="message" class="block text-xs font-medium text-slate-300">Mensaje</label>
+                <textarea id="message" name="message" rows="4" required placeholder="Cuéntame sobre tu proyecto o necesidad técnica..." class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none transition-all resize-none"></textarea>
+              </div>
+
+              <button type="submit" id="submit-btn" class="w-full btn-gradient py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 group shadow-lg shadow-cyan-500/25">
+                <span>Enviar Mensaje</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </form>
+
+            <div id="form-toast" class="hidden mt-4 p-4 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-200 text-xs flex items-center gap-2">
+              <svg class="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>¡Mensaje preparado con éxito! Se abrirá tu cliente de correo para enviarlo directamente.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL CV PREVIEW / DESCARGA -->
+  <div id="cv-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-card max-w-lg w-full rounded-2xl p-6 sm:p-8 border border-white/20 shadow-2xl space-y-5 relative">
+      <button id="close-cv-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2 rounded-lg" aria-label="Cerrar modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="space-y-2">
+        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Curriculum Vitae</span>
+        <h3 class="text-2xl font-outfit font-bold text-white">Álvaro Mª Duarte Do Santos</h3>
+        <p class="text-xs text-slate-300">DevOps Engineer • Cloud Architect • HPC Master's Degree</p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 text-xs text-slate-300">
+        <div class="flex justify-between"><span class="font-semibold text-white">Experiencia:</span> <span>Serenia Solutions, Vodafone, Capgemini</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-white">Educación:</span> <span>UPV (Máster) & UMA (Grado)</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-white">Core Tech:</span> <span>GCP, Kubernetes, Terraform, GitLab CI</span></div>
+        <div class="flex justify-between"><span class="font-semibold text-white">Idiomas:</span> <span>Español (Nativo), Inglés (B2)</span></div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button id="print-cv-btn" class="flex-1 btn-gradient py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span>Imprimir / Guardar en PDF</span>
+        </button>
+        <button id="cancel-cv-modal" class="btn-glass py-2.5 px-4 rounded-xl text-xs font-medium">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+        <span>© 2026 Álvaro Mª Duarte Do Santos.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#hero" class="text-cyan-400 hover:text-cyan-300 transition-colors">Volver arriba ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
