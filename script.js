@@ -164,6 +164,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('email').value.trim();
       const subject = document.getElementById('subject').value.trim();
       const message = document.getElementById('message').value.trim();
+      const honey = document.getElementById('_honey') ? document.getElementById('_honey').value : '';
+
+      // Filtro Honeypot antispam: si el campo invisible fue rellenado, es un bot
+      if (honey !== '') {
+        if (formToast) formToast.classList.remove('hidden');
+        contactForm.reset();
+        return;
+      }
 
       const originalBtnHtml = submitBtn.innerHTML;
       submitBtn.disabled = true;
