@@ -150,28 +150,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 8. Contact Form Handling
+  // 8. Contact Form Handling (Envío directo a alvaroddo@gmail.com)
   const contactForm = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('submit-btn');
   const formToast = document.getElementById('form-toast');
+  const formError = document.getElementById('form-error');
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+  if (contactForm && submitBtn) {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const subject = document.getElementById('subject').value;
-      const message = document.getElementById('message').value;
 
-      // Construct mailto link as fallback
-      const mailtoUrl = `mailto:alvaroddo@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`De: ${name} (${email})\n\nMensaje:\n${message}`)}`;
-      
-      if (formToast) {
-        formToast.classList.remove('hidden');
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Enviando mensaje...</span>
+      `;
+
+      if (formToast) formToast.classList.add('hidden');
+      if (formError) formError.classList.add('hidden');
+
+      try {
+        const response = await fetch("https://formsubmit.co/ajax/alvaroddo@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            _subject: `[Portfolio] ${subject}`,
+            message: message,
+            _template: "table",
+            _captcha: "false"
+          })
+        });
+
+        if (response.ok) {
+          if (formToast) formToast.classList.remove('hidden');
+          contactForm.reset();
+        } else {
+          throw new Error('Error al enviar el formulario');
+        }
+      } catch (err) {
+        console.error('Error al enviar el mensaje:', err);
+        if (formError) formError.classList.remove('hidden');
+        // Fallback a mailto tras un breve instante
         setTimeout(() => {
+          const mailtoUrl = `mailto:alvaroddo@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`De: ${name} (${email})\n\nMensaje:\n${message}`)}`;
           window.location.href = mailtoUrl;
-        }, 800);
-      } else {
-        window.location.href = mailtoUrl;
+        }, 1500);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
       }
     });
   }
