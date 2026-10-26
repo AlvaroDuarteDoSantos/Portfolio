@@ -366,3 +366,16 @@ body {
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.25);
 }
+
+/* ==========================================================================
+   MARKDOWN READER & ARTICLE PREVIEW
+   ========================================================================== */
+.markdown-preview h1 { font-size: 1.75rem; font-weight: 800; margin: 1.25rem 0 0.75rem; color: #fff; font-family: var(--font-heading); }
+.markdown-preview h2 { font-size: 1.4rem; font-weight: 700; margin: 1.2rem 0 0.6rem; color: #38bdf8; font-family: var(--font-heading); }
+.markdown-preview h3 { font-size: 1.15rem; font-weight: 600; margin: 1rem 0 0.5rem; color: #e2e8f0; font-family: var(--font-heading); }
+.markdown-preview p { margin-bottom: 0.9rem; line-height: 1.7; color: #cbd5e1; }
+.markdown-preview ul, .markdown-preview ol { margin-left: 1.5rem; margin-bottom: 0.9rem; list-style-type: disc; color: #cbd5e1; }
+.markdown-preview blockquote { border-left: 4px solid #38bdf8; padding-left: 1rem; margin: 1.2rem 0; color: #94a3b8; font-style: italic; background: rgba(56, 189, 248, 0.05); border-radius: 0 10px 10px 0; padding: 0.6rem 1rem; }
+.markdown-preview pre { background: rgba(0, 0, 0, 0.65); padding: 1.1rem; border-radius: 0.85rem; border: 1px solid rgba(255, 255, 255, 0.12); overflow-x: auto; font-family: var(--font-mono); font-size: 0.85rem; margin: 1.1rem 0; color: #a5f3fc; }
+.markdown-preview code:not(pre code) { background: rgba(255, 255, 255, 0.1); padding: 0.2rem 0.45rem; border-radius: 0.35rem; font-family: var(--font-mono); font-size: 0.85rem; color: #38bdf8; }
+.markdown-preview img { max-width: 100%; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.12); margin: 1.2rem 0; box-shadow: 0 12px 30px rgba(0,0,0,0.6); }

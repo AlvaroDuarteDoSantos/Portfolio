@@ -224,4 +224,171 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 9. Dynamic Blog Loader & Reader Modal
+  const blogPostsGrid = document.getElementById('blog-posts-grid');
+  const blogReaderModal = document.getElementById('blog-reader-modal');
+  const closeBlogReader = document.getElementById('close-blog-reader');
+  const readerCoverContainer = document.getElementById('reader-cover-container');
+  const readerCoverImg = document.getElementById('reader-cover-img');
+  const readerTitle = document.getElementById('reader-title');
+  const readerDate = document.getElementById('reader-date');
+  const readerReadingTime = document.getElementById('reader-reading-time');
+  const readerTags = document.getElementById('reader-tags');
+  const readerContent = document.getElementById('reader-content');
+
+  let currentLoadedPosts = [];
+
+  const loadBlogPosts = async () => {
+    if (!blogPostsGrid) return;
+
+    let posts = [];
+    const client = typeof getSupabaseClient === 'function' ? getSupabaseClient() : null;
+
+    if (client) {
+      try {
+        const { data, error } = await client
+          .from('posts')
+          .select('*')
+          .eq('is_published', true)
+          .order('created_at', { ascending: false });
+
+        if (!error && data && data.length > 0) {
+          posts = data;
+        } else {
+          posts = typeof MOCK_FALLBACK_POSTS !== 'undefined' ? MOCK_FALLBACK_POSTS : [];
+        }
+      } catch (err) {
+        console.warn('Usando posts de respaldo para la bitácora:', err);
+        posts = typeof MOCK_FALLBACK_POSTS !== 'undefined' ? MOCK_FALLBACK_POSTS : [];
+      }
+    } else {
+      posts = typeof MOCK_FALLBACK_POSTS !== 'undefined' ? MOCK_FALLBACK_POSTS : [];
+    }
+
+    currentLoadedPosts = posts;
+    renderBlogGrid(posts);
+  };
+
+  const renderBlogGrid = (posts) => {
+    if (!blogPostsGrid) return;
+    blogPostsGrid.innerHTML = '';
+
+    if (posts.length === 0) {
+      blogPostsGrid.innerHTML = `
+        <div class="col-span-full text-center py-12 glass-card rounded-2xl border border-white/10 p-6">
+          <p class="text-slate-300">Pronto publicaré las primeras reflexiones y avances técnicos aquí.</p>
+        </div>
+      `;
+      return;
+    }
+
+    posts.forEach((post) => {
+      const card = document.createElement('div');
+      card.className = 'glass-card rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-400/40 transition-all duration-300 flex flex-col group cursor-pointer';
+
+      const formattedDate = new Date(post.created_at).toLocaleDateString('es-ES', {
+        year: 'numeric', month: 'short', day: 'numeric'
+      });
+
+      const words = (post.content || '').trim().split(/\s+/).length;
+      const readingMinutes = Math.max(1, Math.ceil(words / 200));
+
+      const tagsHtml = Array.isArray(post.tags)
+        ? post.tags.slice(0, 3).map(tag => `<span class="tech-pill-sm">${tag}</span>`).join('')
+        : '';
+
+      const coverHtml = post.cover_image
+        ? `<div class="h-44 overflow-hidden relative">
+             <img src="${post.cover_image}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+             <div class="absolute inset-0 bg-gradient-to-t from-[#0d1326] via-transparent to-transparent"></div>
+           </div>`
+        : `<div class="h-28 bg-gradient-to-br from-cyan-950/40 via-indigo-950/40 to-black/60 flex items-center justify-center border-b border-white/5">
+             <span class="text-xs font-mono text-cyan-400/60 font-semibold tracking-widest uppercase">Nota de Arquitectura</span>
+           </div>`;
+
+      card.innerHTML = `
+        ${coverHtml}
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-mono">
+              <span>${formattedDate}</span>
+              <span class="text-cyan-300">${readingMinutes} min lectura</span>
+            </div>
+            <h3 class="text-lg font-bold font-outfit text-white group-hover:text-cyan-300 transition-colors line-clamp-2">
+              ${post.title}
+            </h3>
+            <p class="text-slate-400 text-xs line-clamp-3 leading-relaxed">
+              ${post.excerpt || (post.content ? post.content.substring(0, 140) + '...' : '')}
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+            <div class="flex flex-wrap gap-1.5">${tagsHtml}</div>
+            <span class="text-xs font-semibold text-cyan-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              <span>Leer</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => openBlogReader(post));
+      blogPostsGrid.appendChild(card);
+    });
+  };
+
+  const openBlogReader = (post) => {
+    if (!blogReaderModal) return;
+
+    if (post.cover_image) {
+      readerCoverImg.src = post.cover_image;
+      readerCoverContainer.classList.remove('hidden');
+    } else {
+      readerCoverContainer.classList.add('hidden');
+    }
+
+    readerTitle.innerText = post.title;
+    readerDate.innerText = new Date(post.created_at).toLocaleDateString('es-ES', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    const words = (post.content || '').trim().split(/\s+/).length;
+    readerReadingTime.innerText = `${Math.max(1, Math.ceil(words / 200))} min de lectura`;
+
+    readerTags.innerHTML = Array.isArray(post.tags)
+      ? post.tags.map(t => `<span class="tech-tag">${t}</span>`).join('')
+      : '';
+
+    if (window.marked && post.content) {
+      readerContent.innerHTML = marked.parse(post.content);
+    } else {
+      readerContent.innerText = post.content || '';
+    }
+
+    blogReaderModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeReader = () => {
+    if (!blogReaderModal) return;
+    blogReaderModal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  };
+
+  if (closeBlogReader) closeBlogReader.addEventListener('click', closeReader);
+  if (blogReaderModal) {
+    blogReaderModal.addEventListener('click', (e) => {
+      if (e.target === blogReaderModal) closeReader();
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && blogReaderModal && !blogReaderModal.classList.contains('hidden')) {
+      closeReader();
+    }
+  });
+
+  // Load blog posts on page ready
+  loadBlogPosts();
+
 });

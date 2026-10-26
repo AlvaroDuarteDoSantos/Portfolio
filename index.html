@@ -56,6 +56,11 @@
     }
   </script>
 
+  <!-- Supabase JS Client (v2) & Marked for dynamic blog -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="supabase-config.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-[#060813] text-slate-100 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
@@ -92,6 +97,7 @@
           <a href="#experiencia" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Experiencia</a>
           <a href="#habilidades" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Habilidades</a>
           <a href="#proyectos" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Proyectos</a>
+          <a href="#blog" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Bitácora</a>
           <a href="#contacto" class="nav-link px-3.5 py-1.5 rounded-lg hover:text-white transition-colors">Contacto</a>
         </div>
 
@@ -118,6 +124,7 @@
         <a href="#experiencia" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Experiencia</a>
         <a href="#habilidades" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Habilidades</a>
         <a href="#proyectos" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Proyectos</a>
+        <a href="#blog" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Bitácora</a>
         <a href="#contacto" class="mobile-nav-link px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Contacto</a>
       </div>
     </div>
@@ -783,6 +790,35 @@
     </section>
 
 
+    <!-- BITÁCORA Y PROYECTOS SECTION -->
+    <section id="blog" class="scroll-mt-24">
+      <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest font-semibold">Bitácora &amp; Proyectos</span>
+        <h2 class="text-3xl sm:text-4xl font-outfit font-bold text-white">Pensamientos &amp; Nuevas Ideas</h2>
+        <p class="text-slate-400 text-sm">Espacio donde comparto avances de proyectos, experimentos de arquitectura cloud y reflexiones técnicas.</p>
+        <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+        <div class="pt-3">
+          <a href="admin.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 transition-all group">
+            <svg class="w-3.5 h-3.5 text-cyan-400 group-hover:rotate-45 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Crear nueva entrada (Admin)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Dynamic Posts Grid Container -->
+      <div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Loading State -->
+        <div class="col-span-full text-center py-12 text-slate-400 text-sm font-mono">
+          <svg class="animate-spin h-6 w-6 text-cyan-400 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Cargando bitácora técnica...</span>
+        </div>
+      </div>
+    </section>
+
+
     <!-- CONTACTO SECTION -->
     <section id="contacto" class="scroll-mt-24">
       <div class="section-title text-center max-w-2xl mx-auto mb-16 space-y-3">
@@ -926,6 +962,45 @@
     </div>
   </div>
 
+  <!-- MODAL LECTOR DE ARTÍCULOS DE BLOG / BITÁCORA -->
+  <div id="blog-reader-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md">
+    <div class="glass-card max-w-3xl w-full max-h-[90vh] rounded-3xl border border-white/20 shadow-2xl flex flex-col overflow-hidden relative">
+      <!-- Modal Header Bar -->
+      <div class="p-4 sm:px-8 sm:py-5 border-b border-white/10 flex items-center justify-between bg-black/40 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+          <span class="text-xs font-mono text-cyan-300 font-semibold uppercase tracking-wider">Bitácora Técnica</span>
+        </div>
+        <button id="close-blog-reader" class="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition-colors" aria-label="Cerrar artículo">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="overflow-y-auto p-6 sm:p-10 space-y-6">
+        <div id="reader-cover-container" class="hidden rounded-2xl overflow-hidden max-h-72 border border-white/10">
+          <img id="reader-cover-img" src="" alt="Portada" class="w-full h-full object-cover">
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span id="reader-date" class="text-slate-400 font-mono"></span>
+            <span class="text-slate-600">•</span>
+            <span id="reader-reading-time" class="text-cyan-400 font-mono"></span>
+          </div>
+          <h2 id="reader-title" class="text-2xl sm:text-3xl font-outfit font-extrabold text-white leading-tight"></h2>
+          <div id="reader-tags" class="flex flex-wrap gap-1.5 pt-1"></div>
+        </div>
+
+        <div class="h-px bg-white/10"></div>
+
+        <!-- Markdown Rendered Content -->
+        <article id="reader-content" class="markdown-preview text-slate-200 text-sm sm:text-base leading-relaxed space-y-4">
+        </article>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="relative z-10 border-t border-white/10 bg-black/40 backdrop-blur-xl py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
@@ -934,6 +1009,8 @@
         <span>© 2026 Álvaro Mª Duarte Do Santos.</span>
       </div>
       <div class="flex items-center gap-4">
+        <a href="admin.html" class="hover:text-cyan-400 transition-colors">Admin</a>
+        <span>•</span>
         <a href="#hero" class="text-cyan-400 hover:text-cyan-300 transition-colors">Volver arriba ↑</a>
       </div>
     </div>

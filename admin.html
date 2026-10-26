@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Álvaro Duarte</title>
+  <meta name="theme-color" content="#070913">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script>
+    (function() {
+      const origWarn = console.warn;
+      console.warn = function(...args) {
+        if (typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+        origWarn.apply(console, args);
+      };
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Supabase JS Client (v2) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Marked.js for fast Markdown parsing in live preview -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .editor-textarea {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-family: 'JetBrains Mono', monospace;
+      color: #f1f5f9;
+      resize: vertical;
+    }
+    .editor-textarea:focus {
+      border-color: rgba(56, 189, 248, 0.6);
+      outline: none;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+    .markdown-preview h1 { font-size: 1.75rem; font-weight: 800; margin: 1.25rem 0 0.75rem; color: #fff; }
+    .markdown-preview h2 { font-size: 1.4rem; font-weight: 700; margin: 1.1rem 0 0.6rem; color: #38bdf8; }
+    .markdown-preview h3 { font-size: 1.15rem; font-weight: 600; margin: 0.9rem 0 0.5rem; color: #cbd5e1; }
+    .markdown-preview p { margin-bottom: 0.85rem; line-height: 1.65; color: #cbd5e1; }
+    .markdown-preview ul, .markdown-preview ol { margin-left: 1.5rem; margin-bottom: 0.85rem; list-style-type: disc; color: #cbd5e1; }
+    .markdown-preview blockquote { border-left: 4px solid #38bdf8; padding-left: 1rem; margin: 1rem 0; color: #94a3b8; font-style: italic; background: rgba(56, 189, 248, 0.05); border-radius: 0 8px 8px 0; padding: 0.5rem 1rem; }
+    .markdown-preview pre { background: rgba(0, 0, 0, 0.6); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.1); overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; margin: 1rem 0; color: #a5f3fc; }
+    .markdown-preview code:not(pre code) { background: rgba(255, 255, 255, 0.1); padding: 0.2rem 0.4rem; border-radius: 0.35rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8; }
+    .markdown-preview img { max-width: 100%; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.1); margin: 1rem 0; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+  </style>
+</head>
+<body class="bg-[#060813] text-slate-100 font-sans antialiased overflow-x-hidden min-h-screen relative">
+
+  <!-- Ambient Background Blobs -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- TOP NAVBAR -->
+  <header class="relative z-20 border-b border-white/10 bg-black/40 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-cyan-500/20">
+          <span>AD</span>
+        </div>
+        <div>
+          <span class="font-outfit font-bold tracking-tight text-white text-base">Panel de Gestión</span>
+          <span class="text-xs text-cyan-400 block font-mono">Blog &amp; Proyectos</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="btn-glass px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          <span>Volver al Portafolio</span>
+        </a>
+        <button id="logout-btn" class="hidden btn-glass px-3.5 py-1.5 rounded-xl text-xs text-rose-300 hover:bg-rose-500/10 border-rose-500/20 transition-colors">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- 1. LOGIN VIEW (Visible when logged out) -->
+    <div id="login-section" class="max-w-md mx-auto py-12">
+      <div class="glass-card-spotlight rounded-3xl p-8 border border-white/15 shadow-2xl relative space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 mx-auto flex items-center justify-center font-bold text-lg shadow-lg shadow-cyan-500/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h2 class="text-2xl font-bold font-outfit text-white">Acceso Administrador</h2>
+          <p class="text-xs text-slate-400">Inicia sesión con tu cuenta de Supabase para redactar y publicar.</p>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+          <div class="space-y-1.5">
+            <label for="login-email" class="block text-xs font-medium text-slate-300">Correo Electrónico</label>
+            <input type="email" id="login-email" required placeholder="tu@email.com" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none">
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="login-password" class="block text-xs font-medium text-slate-300">Contraseña</label>
+            <input type="password" id="login-password" required placeholder="••••••••" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none">
+          </div>
+
+          <button type="submit" id="login-submit-btn" class="w-full btn-gradient py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2">
+            <span>Iniciar Sesión</span>
+          </button>
+        </form>
+
+        <div id="login-error" class="hidden p-3 rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-200 text-xs text-center"></div>
+
+        <!-- Quick Supabase Credentials Settings Accordion -->
+        <div class="pt-4 border-t border-white/10 text-xs">
+          <button id="toggle-config-btn" type="button" class="text-slate-400 hover:text-cyan-300 flex items-center justify-between w-full">
+            <span>Configurar claves de Supabase</span>
+            <span id="config-chevron">▾</span>
+          </button>
+          <div id="config-panel" class="hidden mt-3 space-y-3 p-3.5 rounded-xl bg-black/40 border border-white/10">
+            <p class="text-[11px] text-slate-400">Si aún no editaste <code>supabase-config.js</code>, puedes pegar tu URL y anon key aquí y se guardarán en tu navegador:</p>
+            <input type="text" id="cfg-url" placeholder="https://xyz.supabase.co" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs">
+            <input type="text" id="cfg-key" placeholder="eyJhbGciOi... (anon key)" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs">
+            <button id="save-cfg-btn" type="button" class="btn-glass px-3 py-1.5 rounded-lg text-xs font-semibold text-cyan-300 hover:text-cyan-200 w-full">
+              Guardar Credenciales en el Navegador
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- 2. DASHBOARD VIEW (Visible when authenticated) -->
+    <div id="dashboard-section" class="hidden space-y-8">
+
+      <!-- Dashboard Controls Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-card rounded-2xl p-5 border border-white/10">
+        <div>
+          <h1 class="text-2xl font-bold font-outfit text-white">Gestión de Publicaciones</h1>
+          <p class="text-xs text-slate-400">Crea, edita y organiza las entradas de tu blog y notas de proyectos.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="new-post-btn" class="btn-gradient px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Nueva Entrada</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- POSTS LIST -->
+      <div id="posts-list-view" class="space-y-4">
+        <div id="posts-loading" class="text-center py-12 text-slate-400 text-sm">
+          <svg class="animate-spin h-6 w-6 text-cyan-400 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Cargando publicaciones...</span>
+        </div>
+
+        <div id="posts-table-container" class="hidden grid grid-cols-1 gap-4">
+          <!-- Dynamic post cards inserted by admin.js -->
+        </div>
+
+        <div id="posts-empty" class="hidden text-center py-16 glass-card rounded-2xl border border-white/10">
+          <p class="text-slate-300 font-medium">Aún no hay publicaciones guardadas.</p>
+          <p class="text-xs text-slate-500 mt-1">Haz clic en "Nueva Entrada" para redactar tu primer artículo.</p>
+        </div>
+      </div>
+
+
+      <!-- POST EDITOR FORM (Split View) -->
+      <div id="editor-view" class="hidden glass-card-spotlight rounded-3xl p-6 sm:p-8 border border-white/15 space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10">
+          <div class="flex items-center gap-3">
+            <button id="cancel-editor-btn" type="button" class="btn-glass p-2 rounded-xl text-slate-300 hover:text-white" title="Volver al listado">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <h2 id="editor-heading" class="text-xl font-bold font-outfit text-white">Redactar Nueva Entrada</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+              <input type="checkbox" id="post-published" checked class="w-4 h-4 rounded text-cyan-500 bg-black/40 border-white/20 focus:ring-cyan-500">
+              <span>Publicado inmediatamente</span>
+            </label>
+            <button id="save-post-btn" type="button" class="btn-gradient px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Guardar Entrada</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Meta Inputs -->
+        <input type="hidden" id="post-id">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label for="post-title" class="block text-xs font-medium text-slate-300">Título de la Entrada</label>
+            <input type="text" id="post-title" required placeholder="Ej: Implementación de Clústeres Kubernetes con Terraform" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white">
+          </div>
+          <div class="space-y-1.5">
+            <label for="post-slug" class="block text-xs font-medium text-slate-300">Slug (URL amigable)</label>
+            <input type="text" id="post-slug" placeholder="implementacion-clusteres-k8s-terraform" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white font-mono text-xs">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label for="post-excerpt" class="block text-xs font-medium text-slate-300">Resumen Breve (Extracto)</label>
+            <input type="text" id="post-excerpt" placeholder="Breve descripción que se mostrará en la tarjeta del blog..." class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white">
+          </div>
+          <div class="space-y-1.5">
+            <label for="post-tags" class="block text-xs font-medium text-slate-300">Etiquetas (separadas por coma)</label>
+            <input type="text" id="post-tags" placeholder="DevOps, Kubernetes, GCP, IaC" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white">
+          </div>
+        </div>
+
+        <!-- Cover Image Uploader (Supabase Storage Bucket: blog-images) -->
+        <div class="space-y-2 p-4 rounded-2xl bg-black/30 border border-white/10">
+          <label class="block text-xs font-semibold text-slate-200">Foto de Portada</label>
+          <div class="flex flex-col sm:flex-row items-center gap-4">
+            <div id="cover-preview-box" class="w-full sm:w-40 h-24 rounded-xl border border-white/15 bg-black/40 overflow-hidden flex items-center justify-center text-slate-500 text-xs">
+              <span id="no-cover-text">Sin imagen</span>
+              <img id="cover-preview-img" src="" alt="Portada" class="hidden w-full h-full object-cover">
+            </div>
+            <div class="flex-1 w-full space-y-2">
+              <input type="text" id="post-cover-url" placeholder="https://... o sube una imagen directamente" class="glass-input w-full px-3 py-2 rounded-xl text-xs text-white">
+              <div class="flex items-center gap-3">
+                <label class="btn-glass px-3 py-1.5 rounded-xl text-xs font-medium cursor-pointer flex items-center gap-2 hover:border-cyan-400/40">
+                  <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Subir Foto al Bucket</span>
+                  <input type="file" id="cover-file-input" accept="image/*" class="hidden">
+                </label>
+                <span id="upload-status" class="text-xs text-slate-400 font-mono"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Markdown Formatting Toolbar -->
+        <div class="flex flex-wrap items-center gap-1.5 p-2 rounded-xl bg-black/40 border border-white/10 text-xs">
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300 font-bold" data-action="bold">B</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300 italic" data-action="italic">I</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300" data-action="h2">H2</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300" data-action="h3">H3</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300" data-action="quote">Cita</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300 font-mono" data-action="code">Código</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300" data-action="list">Lista</button>
+          <button type="button" class="toolbar-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300" data-action="link">Enlace</button>
+          <div class="h-4 w-px bg-white/20 mx-1"></div>
+          <!-- In-body Image Uploader -->
+          <label class="toolbar-btn px-2.5 py-1 rounded bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 cursor-pointer flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Insertar Imagen</span>
+            <input type="file" id="inline-image-input" accept="image/*" class="hidden">
+          </label>
+        </div>
+
+        <!-- Split Screen: Editor & Live Preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Left: Textarea -->
+          <div class="space-y-1">
+            <div class="flex justify-between items-center text-xs text-slate-400 px-1">
+              <span>Contenido (Markdown soportado)</span>
+              <span id="word-count" class="font-mono">0 palabras</span>
+            </div>
+            <textarea id="post-content" rows="18" placeholder="Escribe tu contenido aquí usando Markdown..." class="editor-textarea w-full p-4 rounded-2xl text-sm leading-relaxed"></textarea>
+          </div>
+
+          <!-- Right: Live Preview -->
+          <div class="space-y-1">
+            <div class="text-xs text-slate-400 px-1">
+              <span>Previsualización en Tiempo Real</span>
+            </div>
+            <div id="live-preview" class="markdown-preview h-[450px] overflow-y-auto p-5 rounded-2xl bg-black/30 border border-white/10 text-sm">
+              <span class="text-slate-500 italic">La vista previa aparecerá aquí conforme escribas...</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
