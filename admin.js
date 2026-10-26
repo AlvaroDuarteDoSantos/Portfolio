@@ -350,11 +350,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cleanFileName = file.name.replace(/[^a-zA-Z0-9]/g, '_');
     const filePath = `${Date.now()}-${cleanFileName}.${fileExt}`;
 
-    const { data, error } = await supabase.storage
+    let { data, error } = await supabase.storage
       .from('blog-images')
       .upload(filePath, file, { cacheControl: '3600', upsert: true });
 
-    if (error) throw error;
+    // Si el bucket aún no existe, intentar crearlo automáticamente al vuelo
+    if (error && (error.message?.includes('not found') || error.message?.includes('Bucket not found') || error.error === 'Bucket not found')) {
+      try {
+        await supabase.storage.createBucket('blog-images', { public: true });
+        const retry = await supabase.storage
+          .from('blog-images')
+          .upload(filePath, file, { cacheControl: '3600', upsert: true });
+        if (!retry.error) {
+          error = null;
+          data = retry.data;
+        }
+      } catch (createErr) {
+        console.warn('Auto create bucket error:', createErr);
+      }
+    }
+
+    if (error) {
+      if (error.message?.includes('not found') || error.message?.includes('Bucket not found') || error.error === 'Bucket not found') {
+        throw new Error('El bucket "blog-images" no existe aún en tu panel de Supabase. Ve a la sección Storage de Supabase > New bucket > nombre: "blog-images" > activa "Public bucket" > Save.');
+      }
+      throw error;
+    }
 
     const { data: { publicUrl } } = supabase.storage
       .from('blog-images')
