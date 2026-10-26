@@ -54,21 +54,34 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('blog-images', 'blog-images', true)
 ON CONFLICT (id) DO NOTHING;
 
--- Políticas de Storage:
--- Lectura pública de imágenes
+-- Políticas de Storage para el bucket blog-images:
+DROP POLICY IF EXISTS "Acceso público a imágenes" ON storage.objects;
+DROP POLICY IF EXISTS "Admin subida de imágenes" ON storage.objects;
+DROP POLICY IF EXISTS "Admin actualización de imágenes" ON storage.objects;
+DROP POLICY IF EXISTS "Admin borrado de imágenes" ON storage.objects;
+
+-- 1. Lectura pública de imágenes
 CREATE POLICY "Acceso público a imágenes" 
 ON storage.objects 
 FOR SELECT 
 USING (bucket_id = 'blog-images');
 
--- Subida de imágenes solo para el administrador autenticado
+-- 2. Subida de imágenes para usuario autenticado
 CREATE POLICY "Admin subida de imágenes" 
 ON storage.objects 
 FOR INSERT 
 TO authenticated 
 WITH CHECK (bucket_id = 'blog-images');
 
--- Eliminación de imágenes solo para el administrador autenticado
+-- 3. Actualización de imágenes para usuario autenticado
+CREATE POLICY "Admin actualización de imágenes" 
+ON storage.objects 
+FOR UPDATE 
+TO authenticated 
+USING (bucket_id = 'blog-images')
+WITH CHECK (bucket_id = 'blog-images');
+
+-- 4. Eliminación de imágenes para usuario autenticado
 CREATE POLICY "Admin borrado de imágenes" 
 ON storage.objects 
 FOR DELETE 

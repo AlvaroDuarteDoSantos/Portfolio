@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let { data, error } = await supabase.storage
       .from('blog-images')
-      .upload(filePath, file, { cacheControl: '3600', upsert: true });
+      .upload(filePath, file, { cacheControl: '3600', upsert: false });
 
     // Si el bucket aún no existe, intentar crearlo automáticamente al vuelo
     if (error && (error.message?.includes('not found') || error.message?.includes('Bucket not found') || error.error === 'Bucket not found')) {
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await supabase.storage.createBucket('blog-images', { public: true });
         const retry = await supabase.storage
           .from('blog-images')
-          .upload(filePath, file, { cacheControl: '3600', upsert: true });
+          .upload(filePath, file, { cacheControl: '3600', upsert: false });
         if (!retry.error) {
           error = null;
           data = retry.data;
